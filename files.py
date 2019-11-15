@@ -136,4 +136,26 @@ def readNFM(filepath, vars, cts):
                 ct = ct.split(' <= ')
                 cts[i] = f"UGE({ct[0]}, {ct[1]})"
             # UDiv and URem TODO
+
+    for var_optimise in vars:
+        toerase = []
+        if var_optimise[2] == 'unsigned':
+            toerases = [f'{var_optimise[0]} >= 0', f'{var_optimise[0]} > 1',
+                        f'{var_optimise[0]} <= {(2 ** var_optimise[0]) - 1}',
+                        f'{var_optimise[0]} < {(2 ** var_optimise[0])}']
+            for toerase in toerases:
+                for i, ct_eval in enumerate(cts):
+                    if toerase == ct_eval:
+                        del cts[-i]
+                        break
+        else:
+            toerases = [f'{var_optimise[0]} >= -{(2 ** (var_optimise[1] - 1)) - 1}', f'{var_optimise[1]} > -{(2 ** (var_optimise[1] - 1))}',
+                        f'{var_optimise[0]} <= {(2 ** (var_optimise[1] - 1)) - 1}',
+                        f'{var_optimise[0]} < {(2 ** (var_optimise[1] - 1))}']
+            for toerase in toerases:
+                for i, ct_eval in enumerate(cts):
+                    if toerase == ct_eval:
+                        del cts[-i]
+                        break
+
     return (vars, cts)
