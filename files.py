@@ -30,16 +30,23 @@ def readNFM(filepath, vars, cts):
                         # Two's complement where the bottom limit is the bigger number e.g.: [-7:3]
                         w = (range[0] + 1).bit_length() + 1
                     # Add constraint if the bottom range is not Pw(2)
-                    if (abs(range[0]) / (2 ** (w - 1)) != 1.0): cts.append(f'{var_ranges[0]} > {range[0] - 1}')
+                    if (abs(range[0]) / (2 ** (w - 1)) != 1.0):
+                        cts.append(f'{var_ranges[0]} > {range[0] - 1}')
+                    else:
+                        cts.append(f'{var_ranges[0]} >= {range[0]}')
                     # Add constraint if the top range is not Pw(2)
                     if w != 1 and ((abs(range[1]) + 1) / (2 ** (w - 1)) != 1.0):
                         cts.append(f'{var_ranges[0]} < {range[1] + 1}')
+                    else:
+                        cts.append(f'{var_ranges[0]} <= {range[1]}')
                 else:
                     var_sign = 'unsigned'
                     w = range[1].bit_length()
                     if range[0] != '' and range[0] > 0: cts.append(f'{var_ranges[0]} > {range[0] - 1}')
                     if w != 1 and ((abs(range[1]) + 1) / (2 ** w) != 1.0):
                         cts.append(f'{var_ranges[0]} < {range[1] + 1}')
+                    else:
+                        cts.append(f'{var_ranges[0]} <= {range[1]}')
 
                 # vars.append(input_line.split('def ')[1].split(' [')[0])
                 vars.append([var_ranges[0], w, var_sign])

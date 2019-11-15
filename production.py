@@ -47,29 +47,29 @@ for constraint in constraints:
     if "ULT" in strconstraint or "UGE" in strconstraint:
         ##### Reverse Order #####
         found_ops = strconstraint[4:-1].split(', ')[::-1]
-    elif "<" in strconstraint:
+    elif " < " in strconstraint:
         ##### Reverse Order #####
         found_ops = strconstraint.split(' < ')[::-1]
-    elif ">=" in strconstraint:
+    elif " >= " in strconstraint:
         ##### Reverse Order #####
         found_ops = strconstraint.split(' >= ')[::-1]
-    elif "<=" in strconstraint:
+    elif " <= " in strconstraint:
         ##### Sequential Order #####
         found_ops = strconstraint.split(' <= ')
-    elif ">" in strconstraint:
+    elif " > " in strconstraint:
         ##### Sequential Order #####
         found_ops = strconstraint.split(' > ')
-    elif "==" in strconstraint:
+    elif " == " in strconstraint:
         ##### Sequential Order #####
         found_ops = strconstraint.split(' == ')
-    elif "!=" in strconstraint:
+    elif " != " in strconstraint:
         ##### Sequential Order #####
         found_ops = strconstraint.split(' !=' )
     elif "ULE" in strconstraint or "UGT" in strconstraint or "UDiv" in strconstraint or "URem" in strconstraint:
         ##### Sequential Order #####
         found_ops = strconstraint[4:-1].split(', ')
-    equation_vars = re.split(' \+ | - |\*|/|%|UDiv|URem',found_ops[0])
-    equation_vars += re.split(' \+ | - |\*|/|%|UDiv|URem',found_ops[1])
+    equation_vars = re.split(' \+ | - |\*|/|%| or ',found_ops[0])
+    equation_vars += re.split(' \+ | - |\*|/|%| or ',found_ops[1])
     for found_var in equation_vars:
         if not found_var.isnumeric() and found_var not in bitvarsmap: bitvarsmap.append(found_var)
 
