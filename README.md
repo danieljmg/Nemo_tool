@@ -1,2 +1,2 @@
 # BitBlastingNFMs
-A python tool to transform Numerical Feature Models into CNF DIMACS file using Bit-Blasting
+A python tool that transforms Numerical Feature Models into CNF DIMACS files using Bit-Blasting
