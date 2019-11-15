@@ -1,0 +1,8 @@
+def NFa [-2:1]
+def NFb [-2:1]
+def NFc [-2:1]
+def NFd [-3:3]
+def NFe [-5]
+def NFf [-1,3,5]
+ct NFa*(NFb + NFc) >= NFd
+ct NFa == 1
