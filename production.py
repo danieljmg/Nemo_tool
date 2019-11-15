@@ -13,7 +13,7 @@ constraints = Goal()
 ##### Input model NFs initialisation #####
 file_vars = []
 file_cts = []
-filepath = 'complmodel.txt'
+filepath = 'testmodel.txt'
 ##### Parse, adjust and optimise NFM #####
 (file_vars, file_cts) = readNFM(filepath, file_vars, file_cts)
 print(f'Defined variables (Name, Adjusted_width, Type) = {file_vars}')
@@ -74,7 +74,7 @@ for constraint in constraints:
         if not found_var.isnumeric() and found_var not in bitvarsmap: bitvarsmap.append(found_var)
 
 ##### Identify true variables #####
-varcounter = 1
+varcounter = initvars
 for bitvar in bitvarsmap:
     for bit in range (1, 4):
         #print(f"c {varcounter} {bitvar}_{bit}")
@@ -86,7 +86,7 @@ numvars = len(z3util.get_vars(subgoal.as_expr()))
 
 ##### Followed by Tseitin variables #####
 tseitincounter = 1
-for auxvarsid in range (varcounter, numvars+1):
+for auxvarsid in range (varcounter, numvars+initvars):
     #print(f"c {auxvarsid} Tseitin_Variable_{tseitincounter}")
     f.write(f"c {auxvarsid} Tseitin_Variable_{tseitincounter}")
     f.write("\n")
