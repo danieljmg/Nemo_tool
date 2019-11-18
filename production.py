@@ -7,7 +7,8 @@ import re
 modelname = "model"
 f = open(f"{modelname}.dimacs", "w")
 
-initvars = 1
+booleanmodelname = "modeltest.dimacs"
+
 constraints = Goal()
 
 ##### Input model NFs initialisation #####
@@ -73,6 +74,21 @@ for constraint in constraints:
     for found_var in equation_vars:
         if not found_var.isnumeric() and found_var not in bitvarsmap: bitvarsmap.append(found_var)
 
+##### Initialise var and clauses counters, and write variables of the second model depending on its existence #####
+initconstraints = 0
+if(booleanmodelname):
+    with open(booleanmodelname) as input_file:
+        input_file_content = input_file.read().splitlines()
+        for input_line in input_file_content:
+            if 'c ' == input_line[0:2]:
+                f.write(input_line)
+                f.write("\n")
+            elif 'p cnf ' == input_line[0:6]:
+                vars_and_constraints = input_line[6:].split(' ')
+                initvars = int(vars_and_constraints[0])+1
+                initconstraints = int(vars_and_constraints[1])
+else: initvars = 1
+
 ##### Identify true variables #####
 varcounter = initvars
 for bitvar in bitvarsmap:
@@ -86,16 +102,26 @@ numvars = len(z3util.get_vars(subgoal.as_expr()))
 
 ##### Followed by Tseitin variables #####
 tseitincounter = 1
-for auxvarsid in range (varcounter, numvars+initvars):
+for totalvarsid in range (varcounter, numvars+initvars):
     #print(f"c {auxvarsid} Tseitin_Variable_{tseitincounter}")
-    f.write(f"c {auxvarsid} Tseitin_Variable_{tseitincounter}")
+    f.write(f"c {totalvarsid} Tseitin_Variable_{tseitincounter}")
     f.write("\n")
     tseitincounter += 1
 
 ##### Transform Z3 output to DIMACS CNF NFM #####
 #print(f"p cnf {numvars} {maxrange}")
-f.write(f"p cnf {numvars} {maxrange}")
+f.write(f"p cnf {totalvarsid} {maxrange+initconstraints}")
 f.write("\n")
+
+##### Add caluses of the second model if needed #####
+if(booleanmodelname):
+    with open(booleanmodelname) as input_file:
+        input_file_content = input_file.read().splitlines()
+        for input_line in input_file_content:
+            if (input_line[0:1].isdigit()):
+                f.write(input_line)
+                f.write("\n")
+
 for c in range (maxrange):
     aux = str(subgoal[0][c]).replace("Or(", "")
     aux = aux.replace("k!", "")
