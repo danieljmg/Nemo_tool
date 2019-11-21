@@ -7,7 +7,7 @@ import re
 modelname = "model"
 f = open(f"{modelname}.dimacs", "w")
 
-booleanmodelname = "modeltest.dimacs"
+booleanmodelname = "" #"modeltest.dimacs"
 
 constraints = Goal()
 
@@ -20,13 +20,23 @@ filepath = 'testmodel.txt'
 print(f'Defined variables (Name, Adjusted_width, Type) = {file_vars}')
 print(f'Adjusted constraints = {file_cts}')
 
+auxf= open("auxdefs.py","w+")
+auxf.write("from z3 import *\n")
+auxf.write("def embeed(constraints):")
 ##### Define NFM variables in Z3py format #####
 for file_var in file_vars:
-    exec(f"{file_var[0]} = BitVec('{file_var[0]}', {file_var[1]})")
+    if file_var[2] == 'boolean':
+        auxf.write(f"\n    {file_var[0]} = Bool('{file_var[0]}')")
+    else:
+        auxf.write(f"\n    {file_var[0]} = BitVec('{file_var[0]}', {file_var[1]})")
 
 ##### Define NFM constraints in Z3py format #####
 for file_ct in file_cts:
-    exec(f'constraints.add({file_ct})')
+    auxf.write(f"\n    constraints.add({file_ct})")
+##### Close the file and execute the dinamically generated code #####
+auxf.close()
+from auxdefs import embeed
+embeed(constraints)
 
 ##### constraints == Constraints array || subgoal[0] == CNF PF #####
 t = Then('simplify', 'bit-blast', 'tseitin-cnf')
@@ -42,37 +52,54 @@ bitvarsmap = []
 for constraint in constraints:
     #print(constraint)
     ##### Remove parenthesis #####
-    strconstraint = str(constraint).replace('(', '')
-    strconstraint = strconstraint.replace(')', '')
+    complexstrconstraint = str(constraint).replace('(', '')
+    complexstrconstraint = complexstrconstraint.replace(')', '')
 
-    if "ULT" in strconstraint or "UGE" in strconstraint:
-        ##### Reverse Order #####
-        found_ops = strconstraint[4:-1].split(', ')[::-1]
-    elif " < " in strconstraint:
-        ##### Reverse Order #####
-        found_ops = strconstraint.split(' < ')[::-1]
-    elif " >= " in strconstraint:
-        ##### Reverse Order #####
-        found_ops = strconstraint.split(' >= ')[::-1]
-    elif " <= " in strconstraint:
+    if 'Implies' in complexstrconstraint:
         ##### Sequential Order #####
-        found_ops = strconstraint.split(' <= ')
-    elif " > " in strconstraint:
+        found_complex_ops = complexstrconstraint[7:].split(', ')
+    elif 'Or' in complexstrconstraint:
         ##### Sequential Order #####
-        found_ops = strconstraint.split(' > ')
-    elif " == " in strconstraint:
-        ##### Sequential Order #####
-        found_ops = strconstraint.split(' == ')
-    elif " != " in strconstraint:
-        ##### Sequential Order #####
-        found_ops = strconstraint.split(' !=' )
-    elif "ULE" in strconstraint or "UGT" in strconstraint or "UDiv" in strconstraint or "URem" in strconstraint:
-        ##### Sequential Order #####
-        found_ops = strconstraint[4:-1].split(', ')
-    equation_vars = re.split(' \+ | - |\*|/|%| or ',found_ops[0])
-    equation_vars += re.split(' \+ | - |\*|/|%| or ',found_ops[1])
-    for found_var in equation_vars:
-        if not found_var.isnumeric() and found_var not in bitvarsmap: bitvarsmap.append(found_var)
+        found_complex_ops = complexstrconstraint[2:].split(', ')
+    else:
+        found_complex_ops = [complexstrconstraint]
+
+    for strconstraint in found_complex_ops:
+        if any(op in ['ULT', 'UGE'] for op in strconstraint):
+            ##### Reverse Order #####
+            found_ops = strconstraint[4:-1].split(', ')[::-1]
+        elif " < " in strconstraint:
+            ##### Reverse Order #####
+            found_ops = strconstraint.split(' < ')[::-1]
+        elif " >= " in strconstraint:
+            ##### Reverse Order #####
+            found_ops = strconstraint.split(' >= ')[::-1]
+        elif " <= " in strconstraint:
+            ##### Sequential Order #####
+            found_ops = strconstraint.split(' <= ')
+        elif " > " in strconstraint:
+            ##### Sequential Order #####
+            found_ops = strconstraint.split(' > ')
+        elif " == " in strconstraint:
+            ##### Sequential Order #####
+            found_ops = strconstraint.split(' == ')
+        elif " != " in strconstraint:
+            ##### Sequential Order #####
+            found_ops = strconstraint.split(' !=')
+        elif any(op in ['ULE', 'UGT'] for op in strconstraint):
+            ##### Sequential Order #####
+            found_ops = strconstraint[4:-1].split(', ')
+        elif any(op in ['UDiv', 'URem'] for op in strconstraint):
+            ##### Sequential Order #####
+            found_ops = strconstraint[5:-1].split(', ')
+        else:
+            found_ops = [strconstraint]
+
+        equation_vars = re.split(' \+ | - |\*|/|%', found_ops[0])
+        if len(found_ops) > 1:
+            equation_vars += re.split(' \+ | - |\*|/|%', found_ops[1])
+        for found_var in equation_vars:
+            if not found_var.isnumeric() and found_var not in bitvarsmap: bitvarsmap.append(found_var)
 
 ##### Initialise var and clauses counters, and write variables of the second model depending on its existence #####
 initconstraints = 0
@@ -91,14 +118,35 @@ else: initvars = 1
 
 ##### Identify true variables #####
 varcounter = initvars
+##### Mapping of Boolean vars and their ids #####
+booleanvarsids = []
+num_predifined_booleans = 0
 for bitvar in bitvarsmap:
-    for bit in range (1, 4):
-        #print(f"c {varcounter} {bitvar}_{bit}")
-        f.write(f"c {varcounter} {bitvar}_{bit}")
-        f.write("\n")
-        varcounter += 1
+    # si es booleano 1, si no el bit width
+    ##### Look for type and width #####
+    for auxvardefs in file_vars:
+        if auxvardefs[0] == bitvar:
+            auxvardef = auxvardefs
 
-numvars = len(z3util.get_vars(subgoal.as_expr()))
+    if auxvardef[2] == 'boolean':
+        if auxvardef[1] == 0:
+            f.write(f"c {varcounter} {bitvar} boolean")
+            f.write("\n")
+            booleanvarsids.append([bitvar, varcounter])
+            varcounter += 1
+        else:
+            f.write(f"c {auxvardef[1]} {bitvar} boolean")
+            f.write("\n")
+            num_predifined_booleans += 1
+            booleanvarsids.append([bitvar, auxvardef[1]])
+    else:
+        for bit in range(1, auxvardef[1] + 1):
+            # print(f"c {varcounter} {bitvar}_{bit}")
+            f.write(f"c {varcounter} {bitvar}_{bit}")
+            f.write("\n")
+            varcounter += 1
+
+numvars = len(z3util.get_vars(subgoal.as_expr())) - num_predifined_booleans
 
 ##### Followed by Tseitin variables #####
 tseitincounter = 1
@@ -129,6 +177,11 @@ for c in range (maxrange):
     aux = aux.replace("))", "")
     aux = aux.replace(")", "")
     aux = aux.replace(",", "")
+    ##### Replace booleans by their ids #####
+    for bv in booleanvarsids:
+        aux = aux.replace(bv[0], str(bv[1]))
+
+    aux = aux.replace("Fa", "1000")
     ##### UPDATING THE NUMBER OF VARIABLE (VAR_ID) #####
     auxarray = aux.split(' ')
     updatedaux = ''
