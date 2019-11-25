@@ -22,6 +22,7 @@ vars =  BitVecs(bitvecsvars[:-1], 2)
 #NFM Constraints
 #g.add(ULE(vars[0], vars[1]), UGE(vars[1], vars[0]), vars[0] == 1, UGT(vars[2], vars[3]))
 #g.add(p == (vars[0] == 3))
+g.add(p == (vars[0] == 3))
 #g.add(Or(vars[0] == 0,  vars[0] == 1,  vars[0] == 2,  vars[0] == 3))
 #g.add(ULT(vars[3], 4), ULE(vars[0] + vars[1] + vars[2], vars[3]))
 #g.add(vars[0] * (vars[1] + vars[2]) == vars[3], vars[0] == 1)

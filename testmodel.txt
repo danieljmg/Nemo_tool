@@ -1,9 +1,11 @@
-def NFa [0:1]
-def NFb [-2:1]
-def NFc [-3:1]
-def NFd [-4:3]
-def NFe [-5]
-def NFf [-1,3,5]
+def Nfa [0:1]
+def Nfb [-2:1]
+def Nfc [-3:1]
+def Nfd [-4:3]
+def Nfe [-5]
+def Nff [-1,3,5]
 def Fa bool 0
-ct NFa*(NFb + NFc) >= NFd
-ct Fa -> NFa == 1
+def Fb bool 0
+ct Nfa*(Nfb + Nfc) >= Nfd
+ct And(Nff == -1, Nff != 3)
+ct Not(Fa)

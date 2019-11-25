@@ -52,6 +52,7 @@ bitvarsmap = []
 for constraint in constraints:
     #print(constraint)
     ##### Remove parenthesis #####
+    complexstrconstraint = str(constraint).replace('Not(', '')
     complexstrconstraint = str(constraint).replace('(', '')
     complexstrconstraint = complexstrconstraint.replace(')', '')
 
@@ -59,6 +60,9 @@ for constraint in constraints:
         ##### Sequential Order #####
         found_complex_ops = complexstrconstraint[7:].split(', ')
     elif 'Or' in complexstrconstraint:
+        ##### Sequential Order #####
+        found_complex_ops = complexstrconstraint[2:].split(', ')
+    elif 'And' in complexstrconstraint:
         ##### Sequential Order #####
         found_complex_ops = complexstrconstraint[2:].split(', ')
     else:
