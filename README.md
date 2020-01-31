@@ -32,15 +32,15 @@ The output is a [**DIMACS**](https://logic.pdmi.ras.ru/~basolver/dimacs.html) fi
 
 As one image is worth a thousand words, the following extended example shows most of the possibilities. It represents the model <*(G or F) and ((A * B) > C) requires (F or (E = D))*>
 
-`def A_constant [3]`
-`def B_natural [0:3]`
-`def C_natural_2 [:3]`
-`def D_integer [ -2:1]`
-`def E_enumerated_integer [-1, 2, 4, 8]`
-`def F_new_boolean bool 0`
-`def G_predifined_boolean bool 23`
-`ct G_predifined_boolean or F_new_boolean`
-`ct (( A_constant * B_natural ) > C_natural ) ->`
+`def A_constant [3]`  
+`def B_natural [0:3] `  
+`def C_natural_2 [:3]`  
+`def D_integer [ -2:1]`  
+`def E_enumerated_integer [-1, 2, 4, 8]`  
+`def F_new_boolean bool 0 `  
+`def G_predifined_boolean bool 23`  
+`ct G_predifined_boolean or F_new_boolean`  
+`ct (( A_constant * B_natural ) > C_natural ) ->`  
 `( F_new_boolean Or ( E_enumerated_integer == D_integer ))`
 
 Real world models pre and post transformation are to be found in the examples folder.
@@ -55,7 +55,7 @@ UNDER CONSTRUCTION
 
 ## Authors
 
-1. **Daniel-Jesus Munoz**: [CAOSD](http://caosd.lcc.uma.es/), Dpt. LCC, Universidad de Málaga, Andalucía Tech, Spain
+1. **Daniel-Jesus Munoz** (@danieljmg): [CAOSD](http://caosd.lcc.uma.es/), Dpt. LCC, Universidad de Málaga, Andalucía Tech, Spain
 2. **Jeho Oh**: [Department of Computer Science](https://www.cs.utexas.edu/people) Austin, Texas, USA
 
 
