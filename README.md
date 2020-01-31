@@ -1,4 +1,4 @@
-![NEMO_LOGO](https://lh6.googleusercontent.com/aXjh6keTJGS3APac2tFGGn3yHTqleORxWUilZP85bm2u14ln-2uT2wNjAN3RvNxjCblFTsNzuHwVSPmUXP07=w1920-h966)
+![NEMO_LOGO](https://i.ibb.co/jW4JLDL/nemo.png)
 
 # Nemo (Numbers, fEatures, MOdels)
 
