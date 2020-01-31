@@ -1,0 +1,27 @@
+c 1 API bool
+c 2 OpenCL bool
+c 3 CUDA bool
+c 4 TextureMemory bool
+c 5 Linear1D bool
+c 6 Linear2D bool
+c 7 Ldg bool
+c 8 Array2D bool
+c 9 LocalMemory bool
+p cnf 9 17
+1 0
+-1 2 3 0
+-2 -3 0
+-4 5 6 7 8 0
+-5 -6 0
+-5 -7 0
+-5 -8 0
+-6 -7 0
+-6 -8 0
+-7 -8 0
+-5 4 0
+-6 4 0
+-7 4 0
+-8 4 0
+-2 -5 0
+-2 -6 0
+-2 -7 0
