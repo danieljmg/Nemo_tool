@@ -4,7 +4,7 @@
 
 Nemo is a boolean and numerical constraint language and tool with first-class support for feature modeling from a collaboration between Universidad de Malaga and University of Texas in Austin.
 
-It is licensed under the MIT license.
+It is licensed under the [MIT license](https://github.com/danieljmg/Nemo_tool/blob/master/LICENSE.txt).
 
 Please note that more data is meant to be available as soon as the ESE special issue article is publicly published.
 
