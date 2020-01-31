@@ -1,3 +1,5 @@
+![NEMO_LOGO](https://lh6.googleusercontent.com/aXjh6keTJGS3APac2tFGGn3yHTqleORxWUilZP85bm2u14ln-2uT2wNjAN3RvNxjCblFTsNzuHwVSPmUXP07=w1920-h966)
+
 # Nemo (Numbers, fEatures, MOdels)
 
 Nemo is a boolean and numerical constraint language and tool with first-class support for feature modeling from a collaboration between Universidad de Malaga and University of Texas in Austin.
