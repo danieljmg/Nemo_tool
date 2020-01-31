@@ -1,4 +1,4 @@
-# Nemo (<u>n</u>umbers, f<u>e</u>atures, <u>mo</u>dels)
+# Nemo (_n_umbers, f_e_atures, _mo_dels)
 
 Nemo is a boolean and numerical constraint language and tool with first-class support for feature modeling from a collaboration between Universidad de Malaga and University of Texas in Austin.
 
@@ -20,11 +20,11 @@ The output is a [**DIMACS**](https://logic.pdmi.ras.ru/~basolver/dimacs.html) fi
 
 ## Supported Definitions
 
-<u>Feature types</u>: boolean, natural and integers.
+**Feature types**: boolean, natural and integers.
 
-<u>Numerical definitions</u>: constant, ranges and enumerated.
+**Numerical definitions**: constant, ranges and enumerated.
 
-<u>Constraint operations</u>: cross-tree constraints (equivalence, implication and negation), inequalities (e.g., greater or equal) and mathematical operators (e.g., multiplication). 
+**Constraint operations**: cross-tree constraints (equivalence, implication and negation), inequalities (e.g., greater or equal) and mathematical operators (e.g., multiplication). 
 
 
 
@@ -55,8 +55,8 @@ UNDER CONSTRUCTION
 
 ## Authors
 
-1. **Daniel-Jesus Munoz** (@danieljmg): [CAOSD](http://caosd.lcc.uma.es/), Dpt. LCC, Universidad de Málaga, Andalucía Tech, Spain
-2. **Jeho Oh**: [Department of Computer Science](https://www.cs.utexas.edu/people) Austin, Texas, USA
+1. **[Daniel-Jesus Munoz](https://github.com/danieljmg)**: [CAOSD](http://caosd.lcc.uma.es/), Dpt. LCC, Universidad de Málaga, Andalucía Tech, Spain
+2. **[Jeho Oh](https://github.com/jeho-oh)**: [Department of Computer Science](https://www.cs.utexas.edu/people) Austin, Texas, USA
 
 
 
