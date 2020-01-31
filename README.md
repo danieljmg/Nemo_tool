@@ -1,4 +1,4 @@
-# Nemo (_n_umbers, f_e_atures, _mo_dels)
+# Nemo (Numbers, fEatures, MOdels)
 
 Nemo is a boolean and numerical constraint language and tool with first-class support for feature modeling from a collaboration between Universidad de Malaga and University of Texas in Austin.
 
@@ -10,7 +10,7 @@ Please note that more data is meant to be available as soon as the ESE special i
 
 ## At a glance
 
-The current version of Nemo transforms ***Numerical Feature Models*** (NFMs) into an optimized Tseitin’s *Conjunctive Normal Form* (CNF) **propositional formula** by means of Bit-Blasting. Nemo is a cross-platform tool that have been developed in Python 3.8.1 x86_64.
+The current version of Nemo transforms ***Numerical Feature Models*** (NFMs) into an optimized Tseitin’s *Conjunctive Normal Form* (CNF) **propositional formula** by means of Bit-Blasting. Nemo is a cross-platform tool that have been developed in Python.
 
 The input NFM must be specified using Nemo's modeling language in a *.txt* file.
 
@@ -44,6 +44,25 @@ As one image is worth a thousand words, the following extended example shows mos
 `( F_new_boolean Or ( E_enumerated_integer == D_integer ))`
 
 Real world models pre and post transformation are to be found in the examples folder.
+
+
+
+## Installation
+
+Nemo has been tested in Python 3.8.1 x86_64 at the moment, with up-to-date libraries (`pycosat`, `files`,  `re` and `z3py` modules must be installed). 
+
+To install pycosat in windows:
+
+- Install Microsoft Build Tools for Visual Studio 16
+  - Select: Workloads → C++ build tools.
+  - Select only “Windows 10 SDK” (assuming the computer is Windows 10). To use MSVC cl.exe C / C++ compiler from the command line, additionally select the C++ build tools.
+- `pip install pycosat`
+
+To simply install Z3py:
+
+`pip install z3-solver`
+
+Now you can pull/download and run Nemo.
 
 
 
