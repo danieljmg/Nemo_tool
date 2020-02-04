@@ -1,7 +1,6 @@
 from z3 import *
 from optimisedparsing import readNFM
 from median import calculatemedian
-from smtsolver import smtsolverexec
 import re
 # set_option(verbose = 10)
 # set_option(html_mode=False)
@@ -13,50 +12,52 @@ import time
 start = time.time()
 
 z3flag = True
-modelname = "transformedmodel"
-f = open(f"{modelname}.dimacs", "w")
-
-booleanmodelname = ""#basemodel.dimacs"
-
-constraints = Goal()
-
-##### Input model NFs initialisation #####
-file_vars = []
-file_cts = []
-filepath = 'transformingmodel.txt'
-##### Parse, adjust and optimise NFM #####
-(file_vars, file_cts) = readNFM(filepath, file_vars, file_cts)
-print(f'Defined variables (Name, Adjusted_width, Type) = {file_vars}')
-print(f'Adjusted constraints = {file_cts}')
-
-auxf = open("auxdefs.py","w+")
-auxf.write("from z3 import *\n")
-auxf.write("def embeed(constraints):")
-##### Define NFM variables in Z3py format #####
-for file_var in file_vars:
-    if file_var[2] == 'boolean':
-        auxf.write(f"\n    {file_var[0]} = Bool('{file_var[0]}')")
-    elif 'constant_' in file_var[2]:
-        constant_value = str(file_var[2]).split('_')[1]
-        auxf.write(f"\n    {file_var[0]} = BitVecVal({constant_value}, {file_var[1]})")
-    else:
-        auxf.write(f"\n    {file_var[0]} = BitVec('{file_var[0]}', {file_var[1]})")
-
-##### Define NFM constraints in Z3py format #####
-for file_ct in file_cts:
-    auxf.write(f"\n    constraints.add({file_ct})")
-##### Close the file and execute the dinamically generated code #####
-auxf.close()
-from auxdefs import embeed
-embeed(constraints)
-
-
-### Z3 portion
 if z3flag:
-    smtsolverexec(file_vars)
-    end = time.time() - start  # - 0.05
-    print(f"Transformation and SMT solver time: {str(end).replace('.', ',')} seconds")
+
+    modelname = "smtsolutions"
+
+    from smtsolver import main
+    main(modelname, start)
+
 else:
+    modelname = "transformedmodel"
+    f = open(f"{modelname}.dimacs", "w")
+
+    booleanmodelname = ""  # basemodel.dimacs"
+
+    constraints = Goal()
+
+    ##### Input model NFs initialisation #####
+    file_vars = []
+    file_cts = []
+    filepath = 'transformingmodel.txt'
+    ##### Parse, adjust and optimise NFM #####
+    (file_vars, file_cts) = readNFM(filepath, file_vars, file_cts)
+    print(f'Defined variables (Name, Adjusted_width, Type) = {file_vars}')
+    print(f'Adjusted constraints = {file_cts}')
+
+    auxf = open("auxdefs.py", "w+")
+    auxf.write("from z3 import *\n")
+    auxf.write("def embeed(constraints):")
+    ##### Define NFM variables in Z3py format #####
+    for file_var in file_vars:
+        if file_var[2] == 'boolean':
+            auxf.write(f"\n    {file_var[0]} = Bool('{file_var[0]}')")
+        elif 'constant_' in file_var[2]:
+            constant_value = str(file_var[2]).split('_')[1]
+            auxf.write(f"\n    {file_var[0]} = BitVecVal({constant_value}, {file_var[1]})")
+        else:
+            auxf.write(f"\n    {file_var[0]} = BitVec('{file_var[0]}', {file_var[1]})")
+
+    ##### Define NFM constraints in Z3py format #####
+    for file_ct in file_cts:
+        auxf.write(f"\n    constraints.add({file_ct})")
+    ##### Close the file and execute the dinamically generated code #####
+    auxf.close()
+    from auxdefs import embeed
+
+    embeed(constraints)
+
     ##### constraints == Constraints array || subgoal[0] == CNF PF #####
     # t = WithParams(Then('simplify', 'bit-blast', 'tseitin-cnf'), distributivity=False)
     p = ParamsRef()

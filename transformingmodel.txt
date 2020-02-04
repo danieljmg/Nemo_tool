@@ -1,4 +1,4 @@
-def A [0:15]
-def B [0:15]
-def C [0:15]
+def A [0:3]
+def B [0:3]
+def C [0:3]
 ct (A + B) == C

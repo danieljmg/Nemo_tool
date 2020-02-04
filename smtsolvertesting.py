@@ -1,5 +1,6 @@
 # import secrets
 from z3 import *
+
 # set_option(verbose = 10)
 # set_option(html_mode=False)
 # enable_trace
@@ -12,18 +13,18 @@ constraints = Then('simplify', 'bit-blast', 'tseitin-cnf', 'smt').solver()
 A = BitVec('A', 3)
 B = BitVec('B', 3)
 C = BitVec('C', 3)
-D = Bool('D')
 constraints.add(ULT(A, 4))
 constraints.add(ULT(B, 4))
 constraints.add(ULT(C, 4))
-constraints.add(Implies(((A + B) == (C)), D))
+constraints.add((A + B) == C)
 # s.set(random_seed=secrets.randbelow(5000))
 # s.set(phase_selection=secrets.randbelow(5))
-
 numbersolutions=0
 while constraints.check() == sat:
     m = constraints.model()
     numbersolutions += 1
     print(numbersolutions)
     print(m)
-    constraints.add(Or(A != m[A], B != m[B], C != m[C], D != m[D]))
+    print(str(m).replace('=', '!='))
+    #prueba = str(m).split('')
+    constraints.add(Or(A != m[A], B != m[B], C != m[C]))
