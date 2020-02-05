@@ -1,7 +1,6 @@
 from optimisedparsing import readNFM
 import time
-def main(modelname, start):
-    f = open(f"{modelname}.txt", "w")
+def main(start):
 
     ##### Input model NFs initialisation #####
     file_vars = []
@@ -9,7 +8,7 @@ def main(modelname, start):
     filepath = 'transformingmodel.txt'
     ##### Parse, adjust and optimise NFM #####
     (file_vars, file_cts) = readNFM(filepath, file_vars, file_cts)
-    print(f'Defined variables (Name, Adjusted_width, Type) = {file_vars}')
+    print(f'Defined features (Name, Adjusted_width, Type) = {file_vars}')
     print(f'Adjusted constraints = {file_cts}')
 
     auxf = open("auxsmt.py", "w+")
@@ -30,17 +29,26 @@ def main(modelname, start):
     for file_ct in file_cts:
         auxf.write(f"\n    constraints.add({file_ct})")
     ##### Close the file and execute the dinamically generated code #####
-
+    auxf.write(f"\n    f = open('smtsolutions.txt', 'w')")
     auxf.write(f"\n    numbersolutions = 0")
+    auxf.write(f"\n    print('Calculating solutions:')")
     auxf.write(f"\n    while constraints.check() == sat:")
     auxf.write(f"\n        m = constraints.model()")
     auxf.write(f"\n        numbersolutions += 1")
-    auxf.write(f"\n        print('Solution number: '+str(numbersolutions))")
-    auxf.write(f"\n        print(m)")
-    auxf.write(f"\n        constraints.add(Or(A != m[A], B != m[B], C != m[C]))")
+    auxf.write(f"\n        print(str(numbersolutions))")
+    auxf.write(f"\n        f.write(f'Solution number: '+str(numbersolutions)+'\\n')")
+    #auxf.write(f"\n        print(m)")
+    auxf.write(f"\n        f.write(str(m)+'\\n')")
 
-    auxf.close()
+    auxf.write(f"\n        constraints.add(Or(")
+    allsols = ""
+    for file_var in file_vars:
+        allsols += f"{file_var[0]} != m[{file_var[0]}], "
+    auxf.write(allsols[:-2])
+    auxf.write(f"))")
+    #auxf.write(f"\n        constraints.add(Or(A != m[A], B != m[B], C != m[C]))")
 
+    auxf.write(f"\n    f.close()")
     auxf.close()
     from auxsmt import smtsolverexec
     smtsolverexec()

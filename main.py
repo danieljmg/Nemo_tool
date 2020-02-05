@@ -11,15 +11,18 @@ import re
 import time
 start = time.time()
 
-z3flag = True
-if z3flag:
+z3flag = input("Do you want to run the model in the Z3 SMT solver (y)?: ")
+dimacsflag = input("Do you want to transform the model into DIMACS (y)?: ")
 
-    modelname = "smtsolutions"
+if z3flag == 'y':
 
     from smtsolver import main
-    main(modelname, start)
+    main(start)
 
-else:
+if dimacsflag == 'y':
+    modelname = input("Which is the model .txt to transform?: ")
+    booleanmodelname = input("If you are extending a DIMACS model, please write its name, BLANK otherwise: ")
+
     modelname = "transformedmodel"
     f = open(f"{modelname}.dimacs", "w")
 
@@ -33,7 +36,7 @@ else:
     filepath = 'transformingmodel.txt'
     ##### Parse, adjust and optimise NFM #####
     (file_vars, file_cts) = readNFM(filepath, file_vars, file_cts)
-    print(f'Defined variables (Name, Adjusted_width, Type) = {file_vars}')
+    print(f'Defined features (Name, Adjusted_width, Type) = {file_vars}')
     print(f'Adjusted constraints = {file_cts}')
 
     auxf = open("auxdefs.py", "w+")
