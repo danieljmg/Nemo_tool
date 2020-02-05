@@ -70,9 +70,21 @@ Now you can pull/download and run Nemo.
 
 ## Usage
 
-UNDER CONSTRUCTION
+Run `main.py`
 
+You will be asked:
 
+1. *Do you want to run the model in the Z3 SMT solver?* Answer `y` to run the model in the Z3 SMT solver. The enumerated generated solutions are written in the *smtsolutions.txt* file.
+2. *Do you want to transform the model into DIMACS?* Answer `y` to transform the model into a Tseitin's CNF proposional formula in DIMACS format by means of bit-blasting.
+   1. *Which is the model .txt to transform?* You must write the path/name of the *.txt* file. If in the same folder, just the name is necessary.
+   2. *If you are extending a DIMACS model, please write its name, BLANK otherwise*. You must write the path/name of the *.dimacs* file to evolve. If in the same folder, just the name is necessary. If you are not evolving, press Enter.
+   3. The transformed model is available in the *transformedmodel.dimacs* file.
+
+At all cases, in the terminal are presented:
+
+- Runtimes in seconds.
+- Calculated *Defined features* following the (Name, Adjusted_width, Type) format.
+- Calculated *Adjusted constraints* of the model.
 
 ## Authors
 
