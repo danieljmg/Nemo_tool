@@ -1,3 +1,11 @@
+'''
+    File name: mode.py
+    Author: Daniel-Jesus Munoz
+    Date created: 30/09/2019
+    Python Version: 3.8.
+    Description: It calculates the clauses-mode of a DIMACS file.
+'''
+
 def calculatemedian(filepath):
     with open(filepath) as input_file:
         input_file_content = input_file.read().splitlines()

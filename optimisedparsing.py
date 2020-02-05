@@ -1,3 +1,11 @@
+'''
+    File name: optimisedparsing.py
+    Author: Daniel-Jesus Munoz
+    Date created: 30/09/2019
+    Python Version: 3.8.
+    Description: It optimises and transforms into Z3 code a Nemo Numerical Feature Model
+'''
+
 def readNFM(filepath, vars, cts):
     with open(filepath) as input_file:
         input_file_content = input_file.read().splitlines()

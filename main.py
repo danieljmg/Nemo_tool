@@ -1,6 +1,14 @@
+'''
+    File name: main.py
+    Author: Daniel-Jesus Munoz
+    Date created: 30/09/2019
+    Python Version: 3.8.
+    Description: Mainfile of the tool that transform Numerical Feature Models into a CNF DIMACS file by means of Bit-Blasting (Nemo)
+'''
+
 from z3 import *
 from optimisedparsing import readNFM
-from median import calculatemedian
+from mode import calculatemedian
 import re
 # set_option(verbose = 10)
 # set_option(html_mode=False)

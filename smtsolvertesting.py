@@ -1,3 +1,13 @@
+'''
+    File name: smtsolver.py
+    Author: Daniel-Jesus Munoz
+    Date created: 30/09/2019
+    Python Version: 3.8.
+    Description: Z3/SMT solver just for testing purposes
+'''
+
+# import secrets
+
 # import secrets
 from z3 import *
 
@@ -25,6 +35,4 @@ while constraints.check() == sat:
     numbersolutions += 1
     print(numbersolutions)
     print(m)
-    print(str(m).replace('=', '!='))
-    #prueba = str(m).split('')
     constraints.add(Or(A != m[A], B != m[B], C != m[C]))
