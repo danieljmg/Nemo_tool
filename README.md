@@ -86,6 +86,21 @@ At all cases, in the terminal are presented:
 - Calculated *Defined features* following the (Name, Adjusted_width, Type) format.
 - Calculated *Adjusted constraints* of the model.
 
+
+
+## Test
+
+The next tiny example is the definition of A + B >= C of 2-bits variables.
+
+`def A [0:3]`  
+`def B [0:3] `  
+`def C [0:3]`  
+`ct A + B >= c`
+
+It must produce 54 different valid solutions.
+
+
+
 ## Authors
 
 1. **[Daniel-Jesus Munoz](https://github.com/danieljmg)**: [ITIS](https://www.uma.es/institutos-uma/info/118460/instituto-de-tecnologias-e-ingenieria-del-software/), [CAOSD](http://caosd.lcc.uma.es/), Dpt. LCC, Universidad de Málaga, Andalucía Tech, Spain
