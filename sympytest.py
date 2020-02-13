@@ -1,9 +1,3 @@
-# pip install sympy
-#from sympy.logic.boolalg import to_cnf
-#from sympy.abc import a, b, c, d, e, f, g, h, i, j, k, l
-#b = ~(a) &~(f) &~(~((~(k) |~((j |(h |i |~((~(i) |~(h)))) |~((~(j) |~((h |i |~((~(i) |~(h)))))))))))) &(~((~((h |i |j |k)) &~((d |e |f |g)))) |~((l |a |b |c))) &~(b) &~(c) &~(g)
-#print(to_cnf(b,))
-
 '''
     File name: x.py
     Author: Daniel-Jesus Munoz
@@ -25,6 +19,10 @@ import re
 # for tr in traces:
 #    enable_trace(tr)
 ##### Debugging details end #####
+#set_option(bounded = True, max_indent = 1000000000, auto_config = False, max_lines=100000000000000, max_width=10000000000000, dump_models = True, debug_ref_count = True, memory_high_watermark = 100000000000000, memory_max_alloc_count = 100000000000000000, memory_max_size = 10000000000000000, rlimit = 1000000000000, stats = True)
+#set_pp_option(max_lines = 100000000000, max_width = 10000000, bounded = False, max_indent = 100000)
+set_option(max_depth = 10000000000)
+# https://github.com/Z3Prover/z3/blob/5a1003f6ed10fc65a1cbcd2554f183714c413c7c/src/api/python/z3/z3printer.py#L453
 
 import time
 start = time.time()
@@ -93,24 +91,29 @@ elif dimacsflag == 'y':
     # p.set("distributivity_blowup", 0)
 
     # t = WithParams(Then('simplify', 'bit-blast', 'tseitin-cnf'), distributivity=False)
-    #t = WithParams(Then('simplify', 'bit-blast', 'tseitin-cnf'), p)
+    # t = WithParams(Then('simplify', 'bit-blast', 'tseitin-cnf'), p)
     # t = WithParams(Then('simplify', 'bit-blast'), p)
     # print(t.__setattr__("distributivity", False))
     ##### Debugging details end #####
 
     ##### Tactics definition and assertion test #####
     p = ParamsRef()
-    t = WithParams(Then('simplify', 'bit-blast', 'tseitin-cnf'), p)
+    t = WithParams(Then('simplify', 'bit-blast'), p)
+    # t = WithParams(Then('simplify', 'bit-blast', 'tseitin-cnf'), p)
     subgoal = t(constraints)
     assert len(subgoal) == 1
 
     ##### Debugging details begin #####
-    # auxbb = open("pbb.txt","w+")
-    # for pbb in subgoal[0]:
-    # auxbb.write(str(pbb))
-    # auxbb.write(" and\n")
-    # auxbb.close()
-    # print(subgoal[0])
+    auxbb = open("pbb.txt","w+")
+    for pbb in subgoal[0]:
+        auxbb.write(str(pbb))
+        auxbb.write(" and\n")
+    auxbb.close()
+    from cnftrans import main
+    main(subgoal[0])
+
+    #print(subgoal[0])
+
     ##### Debugging details end #####
 
     ##### subgoal[0] is the CNF PF #####
@@ -281,45 +284,49 @@ elif dimacsflag == 'y':
                     f.write("\n")
     # print(booleanvarsids)
 
-    ##### Transform Z3 output to DIMACS CNF NFM #####
-    for c in range(maxrange):
-        aux = str(subgoal[0][c]).replace("Or(", "")
-        aux = aux.replace("\n  ", "")
-        aux = aux.replace("k!", "")
-        aux = aux.replace("Not(", "-")
-        aux = aux.replace("))", "")
-        aux = aux.replace(")", "")
-        aux = aux.replace(",", "")
+    # ##### MAIN #####
 
-        ##### Adjust the variables IDs, as Z3 starts in 0, and DIMACS in 1 (larger init_id if extending a model) #####
-        auxarray = aux.split(' ')
-        updatedaux = ''
-        for literalvar in auxarray:
-            ##### HACK => prevent python considering -0 equivalent to 0 #####
-            if (literalvar == '-0'):
-                updatedaux += str(f"-{initvars}") + ' '
-            else:
-                ##### Adjust Z3 IDs considering the sign #####
-                if literalvar.lstrip("-").isnumeric():
-                    numliteralvar = int(literalvar)
-                    if numliteralvar < 0:
-                        updatedaux += str(numliteralvar - initvars) + ' '
-                    else:
-                        updatedaux += str(numliteralvar + initvars) + ' '
-                else:
-                    ##### All Z3 boolean features are transformed all at once in the next line #####
-                    updatedaux += str(f"{literalvar}") + ' '
+    # ##### Transform Z3 output to DIMACS CNF NFM #####
+    # for c in range(maxrange):
+    #     aux = str(subgoal[0][c]).replace("Or(", "")
+    #     aux = aux.replace("\n  ", "")
+    #     aux = aux.replace("k!", "")
+    #     aux = aux.replace("Not(", "-")
+    #     aux = aux.replace("))", "")
+    #     aux = aux.replace(")", "")
+    #     aux = aux.replace(",", "")
+    #
+    #     ##### Adjust the variables IDs, as Z3 starts in 0, and DIMACS in 1 (larger init_id if extending a model) #####
+    #     auxarray = aux.split(' ')
+    #     updatedaux = ''
+    #     for literalvar in auxarray:
+    #         ##### HACK => prevent python considering -0 equivalent to 0 #####
+    #         if (literalvar == '-0'):
+    #             updatedaux += str(f"-{initvars}") + ' '
+    #         else:
+    #             ##### Adjust Z3 IDs considering the sign #####
+    #             if literalvar.lstrip("-").isnumeric():
+    #                 numliteralvar = int(literalvar)
+    #                 if numliteralvar < 0:
+    #                     updatedaux += str(numliteralvar - initvars) + ' '
+    #                 else:
+    #                     updatedaux += str(numliteralvar + initvars) + ' '
+    #             else:
+    #                 ##### All Z3 boolean features are transformed all at once in the next line #####
+    #                 updatedaux += str(f"{literalvar}") + ' '
+    #
+    #     ##### Replace Z3 boolean features by their DIMACS IDs #####
+    #     for bv in booleanvarsids:
+    #         updatedaux = updatedaux.replace(bv[0], str(bv[1]))
+    #     # print(updatedaux+'0')
+    #
+    #     ##### DIMACS clauses finish with a '0' #####
+    #     f.write(updatedaux + '0')
+    #
+    #     ##### Remove the last 'new line' if it is the last clause #####
+    #     if (c < maxrange - 1): f.write("\n")
 
-        ##### Replace Z3 boolean features by their DIMACS IDs #####
-        for bv in booleanvarsids:
-            updatedaux = updatedaux.replace(bv[0], str(bv[1]))
-        # print(updatedaux+'0')
-
-        ##### DIMACS clauses finish with a '0' #####
-        f.write(updatedaux + '0')
-
-        ##### Remove the last 'new line' if it is the last clause #####
-        if (c < maxrange - 1): f.write("\n")
+    # ##### MAIN #####
 
     f.close()
     end = time.time() - start  # - 0.05

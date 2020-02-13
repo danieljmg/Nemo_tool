@@ -5,6 +5,7 @@
 /z3.log
 /auxsmt.py
 /auxdefs.py
-/auxsympy.py
+/auxcnf.py
 /smtsolutions.txt
 /.z3-trace
+/testing.py
