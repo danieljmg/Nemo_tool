@@ -13,7 +13,8 @@ def main(start):
     ##### Input model NFs initialisation #####
     file_vars = []
     file_cts = []
-    filepath = 'transformingmodel.txt'
+    filepath = input("Which is the model .txt to run?: ")
+    #filepath = 'transformingmodel.txt'
     ##### Parse, adjust and optimise NFM #####
     (file_vars, file_cts) = readNFM(filepath, file_vars, file_cts)
     print(f'Defined features (Name, Adjusted_width, Type) = {file_vars}')

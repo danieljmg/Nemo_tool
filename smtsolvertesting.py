@@ -20,13 +20,15 @@ from z3 import *
 # (N times * width) - 1 if over one * as we are starting in 0
 # We must calculate the greatest increase from both individually ( I think)
 constraints = Then('simplify', 'bit-blast', 'tseitin-cnf', 'smt').solver()
-A = BitVec('A', 3)
-B = BitVec('B', 3)
-C = BitVec('C', 3)
-constraints.add(ULT(A, 4))
-constraints.add(ULT(B, 4))
-constraints.add(ULT(C, 4))
-constraints.add((A + B) == C)
+A = BitVec('A', 2)
+B = BitVec('B', 2)
+C = BitVec('C', 2)
+D = BitVec('D', 2)
+constraints.add(ULE(A, 1))
+constraints.add(ULE(B, 1))
+constraints.add(ULE(C, 1))
+constraints.add(ULE(D, 1))
+constraints.add((A + B) == (C + D))
 # s.set(random_seed=secrets.randbelow(5000))
 # s.set(phase_selection=secrets.randbelow(5))
 numbersolutions=0
@@ -35,4 +37,4 @@ while constraints.check() == sat:
     numbersolutions += 1
     print(numbersolutions)
     print(m)
-    constraints.add(Or(A != m[A], B != m[B], C != m[C]))
+    constraints.add(Or(A != m[A], B != m[B], C != m[C], D != m[D]))

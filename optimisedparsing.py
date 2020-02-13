@@ -110,11 +110,11 @@ def readNFM(filepath, vars, cts):
                         ##### More efficient constraint #####
                         cts.append(f'{var_ranges[0]} < {rrange[1] + 1}')
                     ##### HACK: To prevent literal removal if within width, we add an extra bit if starts on ZERO and is within the limits #####
-                    elif (rrange[0] == 0):
-                        w += 1
-                        cts.append(f'{var_ranges[0]} < {rrange[1] + 1}')
-                        ##### HACK: We register the increased bits as a record to prevent unnecessary future bit-width extensions #####
-                        increased_bit += var_ranges[0]
+                    # elif (rrange[0] == 0):
+                    #     w += 1
+                    #     cts.append(f'{var_ranges[0]} < {rrange[1] + 1}')
+                    #     ##### HACK: We register the increased bits as a record to prevent unnecessary future bit-width extensions #####
+                    #     increased_bit += var_ranges[0]
                     ##### It is within the upper limit, but as it does not start in ZERO, there is no necessity of a hack #####
                     else:
                         cts.append(f'{var_ranges[0]} <= {rrange[1]}')

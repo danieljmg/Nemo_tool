@@ -14,7 +14,7 @@ import re
 ##### Debugging details begin #####
 # set_option(verbose = 10)
 # set_option(html_mode=False)
-# set_option(trayce = True)
+# set_option(trace = True)
 # traces = ["tseitin_cnf_bug", "tseitin_cnf", "simplify", "before_search", "after_search", "asserted_formulas", "bv", "resolve_conflict", "set_conflict", "arith", "rewriter"]
 # for tr in traces:
 #    enable_trace(tr)
@@ -24,19 +24,22 @@ import time
 start = time.time()
 
 z3flag = input("Do you want to run the model in the Z3 SMT solver (y)?: ")
-dimacsflag = input("Do you want to transform the model into DIMACS (y)?: ")
+if z3flag != 'y': dimacsflag = input("Do you want to transform the model into DIMACS (y)?: ")
+# z3flag = 'n'
+# dimacsflag = 'y'
 
 if z3flag == 'y':
 
     from smtsolver import main
     main(start)
 
-if dimacsflag == 'y':
+elif dimacsflag == 'y':
     filepath = input("Which is the model .txt to transform?: ")
-    filepath = 'transformingmodel.txt'
+    # filepath = 'transformingmodel.txt'
 
     booleanmodelname = input("If you are extendiyng a DIMACS model, please write its name, BLANK otherwise: ")
     if (booleanmodelname): booleanmodelname = "" + ".dimacs"  # basemodel.dimacs"
+    # booleanmodelname = ""
 
     ##### Initialise resulting file and the Z3 constraints variable #####
     modelname = "transformedmodel"
@@ -177,7 +180,7 @@ if dimacsflag == 'y':
 
             ##### Preventing duplicated variables #####
             for found_var in equation_vars:
-                if not found_var.isnumeric() and found_var.replace(" ", "").replace("And", "").replace("Or", "").replace("UDiv", "").replace("URem", "") not in bitvarsmap: bitvarsmap.append(found_var.replace(" ", ""))
+                if not found_var.isnumeric() and found_var.replace(" ", "").replace("And", "").replace("Or", "").replace("UDiv", "").replace("URem", "") not in bitvarsmap: bitvarsmap.append(found_var.replace(" ", "").replace(" ", "").replace("And", "").replace("Or", "").replace("UDiv", "").replace("URem", ""))
 
     ##### Initialise var and clauses counters by means of 'c' identification, and copy the variables of the extending model (if exists) #####
     if (booleanmodelname):
