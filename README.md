@@ -101,20 +101,21 @@ It must produce 54 different valid solutions.
 
 
 
-## Authors
+## Contact Author and Code Management
 
 1. **[Daniel-Jesus Munoz](https://github.com/danieljmg)**: [ITIS](https://www.uma.es/institutos-uma/info/118460/instituto-de-tecnologias-e-ingenieria-del-software/), [CAOSD](http://caosd.lcc.uma.es/), Dpt. LCC, Universidad de Málaga, Andalucía Tech, Spain
 
-2. **Mónica Pinto**: [ITIS](https://www.uma.es/institutos-uma/info/118460/instituto-de-tecnologias-e-ingenieria-del-software/), [CAOSD](http://caosd.lcc.uma.es/), Dpt. LCC, Universidad de Málaga, Andalucía Tech, Spain
+## Other Tool Authors
 
-3. **Lidia Fuentes**: [ITIS](https://www.uma.es/institutos-uma/info/118460/instituto-de-tecnologias-e-ingenieria-del-software/), [CAOSD](http://caosd.lcc.uma.es/), Dpt. LCC, Universidad de Málaga, Andalucía Tech, Spain
+1. **Mónica Pinto**: [ITIS](https://www.uma.es/institutos-uma/info/118460/instituto-de-tecnologias-e-ingenieria-del-software/), [CAOSD](http://caosd.lcc.uma.es/), Dpt. LCC, Universidad de Málaga, Andalucía Tech, Spain
 
+2. **Lidia Fuentes**: [ITIS](https://www.uma.es/institutos-uma/info/118460/instituto-de-tecnologias-e-ingenieria-del-software/), [CAOSD](http://caosd.lcc.uma.es/), Dpt. LCC, Universidad de Málaga, Andalucía Tech, Spain
 
-## Supporters
+## Publication Supporters
 
-1. **[Jeho Oh](https://github.com/jeho-oh)**: [Department of Computer Science](https://www.cs.utexas.edu/people) Austin, Texas, USA
+3. **[Jeho Oh](https://github.com/jeho-oh)**: [Department of Computer Science](https://www.cs.utexas.edu/people) Austin, Texas, USA
 
-2. **[Don Batory](https://www.cs.utexas.edu/~dsb/)**: Department of Computer Science Austin, Texas, USA
+4. **[Don Batory](https://www.cs.utexas.edu/~dsb/)**: Department of Computer Science Austin, Texas, USA
 
    
 
