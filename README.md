@@ -113,9 +113,9 @@ It must produce 54 different valid solutions.
 
 ## Publication Supporters
 
-3. **[Jeho Oh](https://github.com/jeho-oh)**: [Department of Computer Science](https://www.cs.utexas.edu/people) Austin, Texas, USA
+1. **[Jeho Oh](https://github.com/jeho-oh)**: [Department of Computer Science](https://www.cs.utexas.edu/people) Austin, Texas, USA
 
-4. **[Don Batory](https://www.cs.utexas.edu/~dsb/)**: Department of Computer Science Austin, Texas, USA
+2. **[Don Batory](https://www.cs.utexas.edu/~dsb/)**: Department of Computer Science Austin, Texas, USA
 
    
 
